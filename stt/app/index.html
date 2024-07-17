@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Speech to Text Converter</title>
+</head>
+<body>
+  <h1>Speech to Text Converter</h1>
+  <button id="recordButton">Start Recording</button>
+  <button id="stopButton" disabled>Stop Recording</button>
+  <p id="status"></p>
+
+  <script>
+    const recordButton = document.getElementById('recordButton');
+    const stopButton = document.getElementById('stopButton');
+    const statusText = document.getElementById('status');
+    
+    let mediaRecorder;
+    let audioChunks = [];
+
+    async function startRecording() {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.start();
+
+        mediaRecorder.ondataavailable = event => {
+          audioChunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' }); // Allow any format you need
+          const formData = new FormData();
+          formData.append('audio', audioBlob, 'recording.webm'); // Use webm for web browsers
+
+          try {
+            const response = await fetch('/api/speech-to-text', {
+              method: 'POST',
+              body: formData,
+            });
+
+            const data = await response.json();
+            if (data.text) {
+              statusText.textContent = `Transcription: ${data.text}`;
+            } else {
+              statusText.textContent = `Error: ${data.error}`;
+            }
+          } catch (error) {
+            statusText.textContent = `Error: ${error.message}`;
+          }
+        };
+
+        recordButton.disabled = true;
+        stopButton.disabled = false;
+      } else {
+        statusText.textContent = 'Your browser does not support audio recording.';
+      }
+    }
+
+    function stopRecording() {
+      mediaRecorder.stop();
+      recordButton.disabled = false;
+      stopButton.disabled = true;
+    }
+
+    recordButton.addEventListener('click', startRecording);
+    stopButton.addEventListener('click', stopRecording);
+  </script>
+</body>
+</html>

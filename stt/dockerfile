@@ -1,0 +1,31 @@
+# Use the official Python slim image from the Docker Hub
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /application
+
+# Install ffmpeg and build tools
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    build-essential \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the requirements file and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the application files, including the models directory
+#COPY app ./application
+COPY app/models ./models
+COPY app/stt.py .
+COPY app/index.html .
+
+# Make port 55000 available to the world outside this container
+EXPOSE 55000
+
+# Set environment variable for UTF-8 encoding
+ENV PYTHONIOENCODING=utf-8
+
+# Run stt.py when the container launches
+CMD ["python", "stt.py"]
