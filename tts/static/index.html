@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Text to Speech</title>
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            const formData = new FormData(event.target);
+            const voice = formData.get('voice'); // Get selected voice model
+            const text = formData.get('text'); // Get entered text
+
+            fetch('/convert', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error converting text to speech');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const audioURL = URL.createObjectURL(blob);
+                    const audioElement = document.getElementById('audio');
+                    const sourceElement = document.getElementById('audioSource');
+                    sourceElement.src = audioURL;
+                    audioElement.load();
+                    audioElement.play();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Text-to-Speech Converter</h1>
+    <form id="textToSpeechForm" onsubmit="submitForm(event)">
+
+        <div class="options">
+
+            <label class="label1" for="voice">Choose a voice:</label>
+            <select class="val" name="voice" id="voice">
+                <option class="val" value="en_US-joe-medium">en_US-joe-medium</option>
+                <option class="val" value="en_US-danny-low">en_US-danny-low</option>
+                <option class="val" value="en_US-kathleen-low">en_US-kathleen-low</option>
+                <option class="val" value="en_GB-southern_english_female-low">en_GB-southern_english_female-low</option>
+            </select>
+        </div>
+
+        <div class="text-area">
+            <div class="label2">
+                <label for="text" class="label2">Enter text:</label>
+            </div>
+            <textarea id="text" name="text" rows="12" cols="120"></textarea>
+            <br>
+            <button type="submit" class="button">Convert to Speech</button>
+        </div>
+
+    </form>
+    <audio id="audio" controls>
+        <source id="audioSource" src="" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+</body>
+
+</html>
