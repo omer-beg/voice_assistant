@@ -21,6 +21,7 @@
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];  // Clear audioChunks at the start of a new recording
         mediaRecorder.start();
 
         mediaRecorder.ondataavailable = event => {
@@ -47,6 +48,8 @@
           } catch (error) {
             statusText.textContent = `Error: ${error.message}`;
           }
+          // Clear the chunks after processing
+          audioChunks = [];
         };
 
         recordButton.disabled = true;

@@ -1,0 +1,21 @@
+2024-08-08 14:18:42,538 - We are starting
+2024-08-08 14:18:42,538 - Model file found at C:\Users\Asus\Desktop\STT_Git\voice_assistant\stt\app\models\base.pt
+2024-08-08 14:18:43,632 - Whisper model loaded successfully
+2024-08-08 14:18:43,632 - Time taken to load 1.094557523727417
+2024-08-08 14:18:43,654 - gRPC server for stt started on port 5051
+2024-08-08 14:19:05,877 - Temporary audio file path is C:\Users\Asus\AppData\Local\Temp\tmp43q2yof1.wav seconds
+2024-08-08 14:19:23,732 - Transcription result: {'text': ' Thank you.', 'segments': [{'id': 0, 'seek': 0, 'start': 0.0, 'end': 3.46, 'text': ' Thank you.', 'tokens': [50364, 1044, 291, 13, 50537], 'temperature': 1.0, 'avg_logprob': -1.3472353617350261, 'compression_ratio': 0.5555555555555556, 'no_speech_prob': 0.47572562098503113}], 'language': 'en'}
+2024-08-08 14:19:23,733 - 1 Detected text before new input: None
+2024-08-08 14:19:23,733 - 2 Detected text:  Thank you.
+2024-08-08 14:19:23,733 - Time taken to transcribe: 17.85475754737854 seconds
+2024-08-08 14:19:34,834 - Time taken to translate: 11.100870370864868 seconds
+2024-08-08 14:19:34,834 - Speech-to-text conversion successful
+2024-08-08 14:19:34,835 - Temporary audio file deleted: C:\Users\Asus\AppData\Local\Temp\tmp43q2yof1.wav
+2024-08-08 14:22:02,327 - Temporary audio file path is C:\Users\Asus\AppData\Local\Temp\tmp42zx4lif.wav seconds
+2024-08-08 14:22:08,473 - Transcription result: {'text': " I'll give you a quick answer. I'll give you a quick answer.", 'segments': [{'id': 0, 'seek': 0, 'start': 0.0, 'end': 2.0, 'text': " I'll give you a quick answer.", 'tokens': [50364, 286, 603, 976, 291, 257, 1702, 1867, 13, 50464], 'temperature': 0.0, 'avg_logprob': -0.9393363226027716, 'compression_ratio': 1.4390243902439024, 'no_speech_prob': 0.35715460777282715}, {'id': 1, 'seek': 0, 'start': 3.0, 'end': 5.0, 'text': " I'll give you a quick answer.", 'tokens': [50514, 286, 603, 976, 291, 257, 1702, 1867, 13, 50614], 'temperature': 0.0, 'avg_logprob': -0.9393363226027716, 'compression_ratio': 1.4390243902439024, 'no_speech_prob': 0.35715460777282715}], 'language': 'en'}
+2024-08-08 14:22:08,474 - 1 Detected text before new input: None
+2024-08-08 14:22:08,475 - 2 Detected text:  I'll give you a quick answer. I'll give you a quick answer.
+2024-08-08 14:22:08,475 - Time taken to transcribe: 6.144798040390015 seconds
+2024-08-08 14:22:16,537 - Time taken to translate: 8.062818050384521 seconds
+2024-08-08 14:22:16,537 - Speech-to-text conversion successful
+2024-08-08 14:22:16,539 - Temporary audio file deleted: C:\Users\Asus\AppData\Local\Temp\tmp42zx4lif.wav

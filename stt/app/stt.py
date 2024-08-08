@@ -51,9 +51,10 @@ def convert_speech_to_text():
     
     else:
         audio_file = request.files['audio']
+        #logging.info(f"audio File has {audio_file}")
         print("Audio file received")
         logging.info(f"Audio file is {audio_file.filename}")
-    
+
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio_file:
         audio_file.save(temp_audio_file.name)
         temp_audio_file_path = temp_audio_file.name
@@ -72,12 +73,12 @@ def convert_speech_to_text():
         print(f"Error converting speech to text: {e}")
         logging.info(f"Error converting speech to text: {e}")
         return jsonify({'error': 'Error converting speech to text'}), 500
-
+'''
     finally:
         # Clean up
         if os.path.exists(temp_audio_file_path):
             os.remove(temp_audio_file_path)
-
+'''
 
 if __name__ == '__main__':
     # Change default encoding to UTF-8

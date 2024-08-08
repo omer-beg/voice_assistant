@@ -1,15 +1,20 @@
-from protos import stt_service_pb2 
-from protos import stt_service_pb2_grpc
+import os
+import sys
 import grpc
 from flask import Flask, request, jsonify
 import tempfile
-import os
+
+# Add the base directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), 'stt', 'app')))
+
+from protos import stt_service_pb2 
+from protos import stt_service_pb2_grpc
 
 app = Flask(__name__)
 
 def convert_speech_to_text(audio_data):
     # Create a gRPC channel and stub
-    channel = grpc.insecure_channel('localhost:50051')
+    channel = grpc.insecure_channel('localhost:5051')
     stub = stt_service_pb2_grpc.STTServiceStub(channel)
 
     # Create a request
@@ -30,7 +35,9 @@ def convert_speech_to_text(audio_data):
     except grpc.RpcError as e:
         return {'error': f'gRPC error: {e}'}
 
-@app.route('/upload', methods=['POST'])
+
+
+@app.route('/speech-to-text', methods=['POST'])
 def upload_file():
     if 'audio' not in request.files:
         return jsonify({'error': 'Audio file is missing'}), 400

@@ -1,0 +1,22 @@
+2024-08-08 14:18:10,804 - Starting Flask development server on port 8080
+2024-08-08 14:18:10,846 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8080
+2024-08-08 14:18:10,847 - [33mPress CTRL+C to quit[0m
+2024-08-08 14:18:13,856 - 127.0.0.1 - - [08/Aug/2024 14:18:13] "[36mGET / HTTP/1.1[0m" 304 -
+2024-08-08 14:18:13,941 - 127.0.0.1 - - [08/Aug/2024 14:18:13] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 204 -
+2024-08-08 14:18:22,573 - Audio file received
+2024-08-08 14:18:24,972 - Error in transcription
+2024-08-08 14:18:24,973 - 127.0.0.1 - - [08/Aug/2024 14:18:24] "[35m[1mPOST /api/speech-to-text HTTP/1.1[0m" 500 -
+2024-08-08 14:19:05,869 - Audio file received
+2024-08-08 14:19:34,838 - Speech-to-text conversion successful
+2024-08-08 14:19:34,838 - Sending transcription to bot:  Thank you.
+2024-08-08 14:19:37,298 - Error in bot response generation
+2024-08-08 14:19:37,298 - 127.0.0.1 - - [08/Aug/2024 14:19:37] "[35m[1mPOST /api/speech-to-text HTTP/1.1[0m" 500 -
+2024-08-08 14:19:51,992 - 127.0.0.1 - - [08/Aug/2024 14:19:51] "[36mGET / HTTP/1.1[0m" 304 -
+2024-08-08 14:19:52,083 - 127.0.0.1 - - [08/Aug/2024 14:19:52] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 204 -
+2024-08-08 14:22:02,260 - Audio file received
+2024-08-08 14:22:16,547 - Speech-to-text conversion successful
+2024-08-08 14:22:16,547 - Sending transcription to bot:  I'll give you a quick answer. I'll give you a quick answer.
+2024-08-08 14:23:16,014 - Bot response generated: I understand that you
+2024-08-08 14:23:16,014 - Returning response to web
+2024-08-08 14:23:16,021 - 127.0.0.1 - - [08/Aug/2024 14:23:16] "POST /api/speech-to-text HTTP/1.1" 200 -

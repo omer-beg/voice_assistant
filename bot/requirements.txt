@@ -1,0 +1,9 @@
+
+grpcio==1.65.2
+requests==2.25.1
+transformers==4.43.3
+protobuf==4.23.1
+torch==2.4.0
+
+
+# pip install protobuf-compiler

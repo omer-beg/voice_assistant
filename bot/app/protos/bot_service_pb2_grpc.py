@@ -5,9 +5,8 @@ import warnings
 import os
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.getcwd(),'stt','app')))
-
-from protos import stt_service_pb2
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(),'bot','app')))
+from protos import bot_service_pb2 as bot_service_pb2
 
 GRPC_GENERATED_VERSION = '1.65.2'
 GRPC_VERSION = grpc.__version__
@@ -24,7 +23,7 @@ except ImportError:
 if _version_not_supported:
     warnings.warn(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in stt_service_pb2_grpc.py depends on'
+        + f' but the generated code in protos/bot_service_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -34,7 +33,7 @@ if _version_not_supported:
     )
 
 
-class STTServiceStub(object):
+class ModelServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -43,43 +42,43 @@ class STTServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.ConvertSpeechToText = channel.unary_unary(
-                '/stt.STTService/ConvertSpeechToText',
-                request_serializer=stt_service_pb2.SpeechRequest.SerializeToString,
-                response_deserializer=stt_service_pb2.SpeechResponse.FromString,
+        self.GenerateText = channel.unary_unary(
+                '/bot_service.ModelService/GenerateText',
+                request_serializer=bot_service_pb2.GenerateTextRequest.SerializeToString,
+                response_deserializer=bot_service_pb2.GenerateTextResponse.FromString,
                 _registered_method=True)
 
 
-class STTServiceServicer(object):
+class ModelServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def ConvertSpeechToText(self, request, context):
+    def GenerateText(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_STTServiceServicer_to_server(servicer, server):
+def add_ModelServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'ConvertSpeechToText': grpc.unary_unary_rpc_method_handler(
-                    servicer.ConvertSpeechToText,
-                    request_deserializer=stt_service_pb2.SpeechRequest.FromString,
-                    response_serializer=stt_service_pb2.SpeechResponse.SerializeToString,
+            'GenerateText': grpc.unary_unary_rpc_method_handler(
+                    servicer.GenerateText,
+                    request_deserializer=bot_service_pb2.GenerateTextRequest.FromString,
+                    response_serializer=bot_service_pb2.GenerateTextResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'stt.STTService', rpc_method_handlers)
+            'bot_service.ModelService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('stt.STTService', rpc_method_handlers)
+    server.add_registered_method_handlers('bot_service.ModelService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class STTService(object):
+class ModelService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def ConvertSpeechToText(request,
+    def GenerateText(request,
             target,
             options=(),
             channel_credentials=None,
@@ -92,9 +91,9 @@ class STTService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/stt.STTService/ConvertSpeechToText',
-            stt_service_pb2.SpeechRequest.SerializeToString,
-            stt_service_pb2.SpeechResponse.FromString,
+            '/bot_service.ModelService/GenerateText',
+            bot_service_pb2.GenerateTextRequest.SerializeToString,
+            bot_service_pb2.GenerateTextResponse.FromString,
             options,
             channel_credentials,
             insecure,
