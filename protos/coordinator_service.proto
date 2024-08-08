@@ -1,0 +1,26 @@
+
+
+// python -m grpc_tools.protoc -I=protos --python_out=./protos --grpc_python_out=./protos ./protos/coordinator_service.proto
+
+syntax = "proto3";
+
+package coordinator;
+
+service Coordinator {
+  rpc ProcessAudio (AudioRequest) returns (TextResponse);
+  rpc GetBotResponse (TextRequest) returns (TextResponse);
+}
+
+message AudioRequest {
+  bytes audio_data = 1;
+}
+
+message TextRequest {
+  string text = 1;
+}
+
+message TextResponse {
+  string text = 1;
+  string error = 2;
+}
+
