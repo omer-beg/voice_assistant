@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+
+service ModelService {
+ rpc GenerateText (GenerateTextRequest) returns (GenerateTextResponse);
+}
+
+
+message GenerateTextRequest {
+ string input_text = 1;
+ string conversation_history = 2;  // Ensure this field is present
+}
+
+
+message GenerateTextResponse {
+ string generated_text = 1;
+ string conversation_history = 2; // Ensure this field is present
+ double processing_time = 3;      // Optional, add if needed
+}
