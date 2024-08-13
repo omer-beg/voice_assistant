@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package stt;
+
+service STTService {
+  rpc ConvertSpeechToText (SpeechRequest) returns (SpeechResponse);
+}
+
+message SpeechRequest {
+  bytes audio = 1;
+}
+
+message SpeechResponse {
+  string text = 1;
+  string translation = 2;
+  string language = 3;
+  string message = 4;
+  string error = 5;
+}
+
+//python -m grpc_tools.protoc -I./protos --python_out=./protos --grpc_python_out=./protos ./protos/stt_service.proto

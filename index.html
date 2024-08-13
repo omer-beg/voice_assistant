@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voice Assistant</title>
+</head>
+<body>
+    <h1>Voice Assistant</h1>
+    <h2>Speech to Text Converter</h2>
+    <button id="recordButton">Start Recording</button>
+    <button id="stopButton" disabled>Stop Recording</button>
+    <p id="status"></p>
+    
+    <div>
+        <h2>Conversation</h2>
+        <div id="conversationHistory"></div>
+    </div>
+
+    <script>
+        const recordButton = document.getElementById('recordButton');
+        const stopButton = document.getElementById('stopButton');
+        const statusText = document.getElementById('status');
+        const conversationHistory = document.getElementById('conversationHistory');
+        
+        let mediaRecorder;
+        let audioChunks = [];
+
+        async function startRecording() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];  // Clear audioChunks at the start of a new recording
+                mediaRecorder.start();
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' }); // Allow any format you need
+                    const formData = new FormData();
+                    formData.append('audio', audioBlob, 'recording.webm'); // Use webm for web browsers
+
+                    try {
+                        const response = await fetch('/api/speech-to-text', {
+                            method: 'POST',
+                            body: formData,
+                        });
+
+                        const data = await response.json();
+                        if (data.text) {
+                            appendToConversation(`User: ${data.text}`);
+                            appendToConversation(`Bot: ${data.bot_response}`);
+                        } else {
+                            statusText.textContent = `Error: ${data.error}`;
+                        }
+                    } catch (error) {
+                        statusText.textContent = `Error: ${error.message}`;
+                    }
+                    // Clear the chunks after processing
+                    audioChunks = [];
+                };
+
+                recordButton.disabled = true;
+                stopButton.disabled = false;
+            } else {
+                statusText.textContent = 'Your browser does not support audio recording.';
+            }
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+            recordButton.disabled = false;
+            stopButton.disabled = true;
+        }
+
+        function appendToConversation(text) {
+            const p = document.createElement('p');
+            p.textContent = text;
+            conversationHistory.appendChild(p);
+        }
+
+        recordButton.addEventListener('click', startRecording);
+        stopButton.addEventListener('click', stopRecording);
+    </script>
+</body>
+</html>
