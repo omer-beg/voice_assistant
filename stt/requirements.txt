@@ -1,0 +1,8 @@
+Flask
+requests
+ffmpeg-python
+whisper
+openai-whisper
+torch
+
+
