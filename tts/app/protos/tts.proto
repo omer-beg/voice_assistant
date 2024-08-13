@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package tts;
+
+service TTSService {
+  rpc Convert (ConvertRequest) returns (ConvertResponse);
+}
+
+message ConvertRequest {
+  string text = 1;
+}
+
+message ConvertResponse {
+  bytes audio = 1;
+}
