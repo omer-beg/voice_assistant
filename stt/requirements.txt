@@ -1,8 +1,11 @@
-Flask
-requests
 ffmpeg-python
 whisper
 openai-whisper
 torch
+grpcio
+grpcio-tools
+protobuf
+numpy
+
 
 

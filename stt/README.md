@@ -1,90 +1,109 @@
-Speech-to-Text Flask Application
-This Flask application converts speech audio input to text using the Whisper model.
+# Speech-to-Text (STT) Service
 
-Prerequisites
-Before running the application, ensure you have the following installed:
+## Overview
 
-Python 3.x
-Flask
-Whisper
-PortAudio
-Installation
-Follow these instructions to set up the working environment:
+This repository contains a Speech-to-Text (STT) service built using OpenAI's Whisper models. The service is designed to transcribe speech from audio files into text and provides additional features such as language detection and translation. The service is implemented with gRPC and includes robust logging and telemetry for monitoring and debugging.
 
-Clone the Repository
-git clone https://github.com/arrij46/STT_Microservice.git
-cd STT_Microservice
-Install the dependencies
-pip install -r requirements.txt
-The requirements.txt includes:
+## Features
 
-Flask
-whisper
-pyaudio
-requests
-Install System Dependencies
-For the application to work correctly, you need to install the following system dependencies:
+- **Speech-to-Text Conversion**: Transcribe audio files to text using Whisper's pre-trained models.
+- **Language Detection**: Automatically detect the language of the input speech.
+- **Translation**: Translate the detected language into English if the language is not English.
+- **gRPC Endpoints**: Exposes gRPC endpoints for interaction with the STT service.
+- **Logging**: Comprehensive logging for all operations including model loading, request handling, and error reporting.
+- **Telemetry**: Tracks time taken for model loading, speech transcription, and translation.
 
-For Windows: You might need to install PortAudio binaries and set up PyAudio.
-For Linux:
-sudo apt-get update
-sudo apt-get install -y portaudio19-dev ffmpeg
-Usage
-Run the Flask application:
-For Windows:
-python app/stt.py
-For Linux:
-python3 app/stt.py
-Open your web browser and navigate to http://localhost:55000/ to access the application.
+## Prerequisites
 
-Upload an audio file on the webpage and click "Convert".
+- Python 3.x
+- `grpcio`
+- `grpcio-tools`
+- `torch`
+- `whisper`
+- `protobuf`
 
-The application will convert the speech in the audio file to text and display the result.
+## Installation
 
-API Endpoints
-/ - Homepage serving index.html for user interaction.
-/api/speech-to-text - POST endpoint for converting speech to text. Accepts an audio file.
-Method: POST
-Parameters: audio (audio file to convert to text)
-Returns: JSON response with the transcribed text.
-Logging
-Application logs are stored in app.log.
-Log level is set to INFO, logging various stages of speech-to-text conversion.
-Docker Deployment
-To run the application using Docker:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo
+   cd stt
+   ```
 
-Create a Dockerfile:
-# Use the official Python slim image from the Docker Hub
-FROM python:3.11-slim
+2. Install the required Python packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-# Set the working directory in the container
-WORKDIR /app
+3. Download and place the Whisper model file in the `models` directory:
+   - You can use any model just have to change the model name in stt/server.py.
+   - By default the model used is `base.pt` Ensure you have downloaded and placed it in `models` directory.
 
-# Install system dependencies for pyaudio and other packages
-RUN apt-get update && apt-get install -y \
-    portaudio19-dev \
-    ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+## Usage
 
-# Copy the requirements file into the container
-COPY requirements.txt .
+### Running the STT Service
 
-# Install the necessary packages
-RUN pip install -r requirements.txt
+1. Start the gRPC server:
+   ```bash
+   cd stt/app
+   python server.py
+   ```
 
-# Copy the application files into the container
-COPY app /app/app
+2. The server will start on port `5051` by default. You can access the gRPC endpoints at `[::]:5051`.
 
-# Set environment variable for UTF-8 encoding
-ENV PYTHONIOENCODING=utf-8
+### gRPC Endpoints
 
-# Specify the command to run on container start
-CMD ["python", "app/stt.py"]
-Build the Docker image:
-docker build -t stt-app .
-Run the Docker container:
-docker run -p 55000:55000 stt-app
-After running, open the local host at http://localhost:55000/ to test your application.
-Notes
-Ensure the Whisper model is correctly loaded in the application code.
-The Flask application should be configured to handle file uploads and process them using the Whisper model for transcription.
+- **ConvertSpeechToText**: Accepts audio data and returns the transcribed text, detected language, and translation if applicable.
+
+### Example gRPC Client
+
+To interact with the STT service, you can use a gRPC client. Below is an example in Python:
+
+```python
+import grpc
+from protos import stt_service_pb2
+from protos import stt_service_pb2_grpc
+
+def run():
+    with grpc.insecure_channel('localhost:5051') as channel:
+        stub = stt_service_pb2_grpc.STTServiceStub(channel)
+        with open('path_to_audio_file.wav', 'rb') as audio_file:
+            audio_data = audio_file.read()
+
+        request = stt_service_pb2.SpeechRequest(audio=audio_data)
+        response = stub.ConvertSpeechToText(request)
+        print("Text:", response.text)
+        print("Detected Language:", response.language)
+        print("Translation:", response.translation)
+
+if __name__ == '__main__':
+    run()
+```
+
+### Logging
+
+Logs are stored in `sttlog.log` in the root directory. The log captures:
+
+- Model loading times and status.
+- gRPC request handling.
+- Time taken for transcription and translation.
+- Errors and exceptions.
+
+## Telemetry
+
+The service logs the following telemetry data:
+
+- Time taken to load the Whisper model.
+- Time taken for speech-to-text conversion.
+- Time taken for translation.
+
+This data is logged for performance monitoring and can be found in the `sttlog.log` file.
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
