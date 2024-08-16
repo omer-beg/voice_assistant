@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bot_service;
+
+service ModelService {
+    rpc GenerateText (GenerateTextRequest) returns (GenerateTextResponse);
+}
+
+message GenerateTextRequest {
+    string input_text = 1;
+    string conversation_history = 2;
+}
+
+message GenerateTextResponse {
+    string generated_text = 1;
+    string conversation_history = 2;
+}
+
+//python -m grpc_tools.protoc -I. --python_out=./ --grpc_python_out=./ ./protos/bot_service.proto
