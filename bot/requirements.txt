@@ -1,0 +1,9 @@
+grpcio
+grpcio-tools
+requests
+transformers 
+protobuf
+torch 
+torchvision 
+torchaudio
+
